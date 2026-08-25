@@ -1,0 +1,15 @@
+﻿# Security
+key.bin
+config.json
+*.log
+
+# Build & Dist
+build/
+dist/
+*.spec
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
