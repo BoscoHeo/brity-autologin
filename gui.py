@@ -411,6 +411,17 @@ def _run_macro_window(cert_username: str, cert_password: str, app_path: str, cer
 
     def _worker():
         try:
+            # ── 0. GitHub 자동 업데이트 확인 (최대 1.5초 타임아웃) ──
+            try:
+                import updater
+                has_update, new_ver, dl_url = updater.check_for_update(current_version="v3.8", timeout_sec=1.5)
+                if has_update and dl_url:
+                    win.update_status(f"새 버전({new_ver}) 발견! 자동 업데이트 중...")
+                    if updater.apply_update(dl_url, status_callback=win.update_status):
+                        return
+            except Exception as up_err:
+                logger.debug(f"업데이트 확인 건너뜀: {up_err}")
+
             macro_engine.run_login(
                 cert_username=cert_username,
                 cert_password=cert_password,
